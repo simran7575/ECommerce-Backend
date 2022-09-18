@@ -2,11 +2,11 @@ const nodemailer = require("nodemailer");
 
 exports.mailHelper = async (options) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: process.env.SMTP_HOST,
     secure: true,
     auth: {
-      user: "simranbedi7575@gmail.com",
-      pass: "ecvkmrwhmonfukqq",
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
     // host: process.env.SMTP_HOST,
     // port: process.env.SMTP_PORT,
@@ -17,7 +17,7 @@ exports.mailHelper = async (options) => {
   });
 
   const message = {
-    from: "simranbedi7575@gmail.com", // sender address
+    from: process.env.SMTP_USER, // sender address
     to: options.email, // list of receivers
     subject: options.subject, // Subject line
     text: options.message, // plain text body
