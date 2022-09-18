@@ -16,7 +16,7 @@ exports.deleteProduct = BigPromise(async (req, res, next) => {
     return res.status(200).json(CustomError("No such product exist", 400));
   }
 
-  // await product.remove();
+  await product.remove();
 
   return res.status(200).json({
     success: true,
