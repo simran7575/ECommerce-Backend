@@ -7,6 +7,8 @@ const {
   resetpassword,
   userDetails
 } = require("../controllers/userController");
+const { isLoggedIn } = require("../middlewares/user");
+
 
 router.route("/signup").post(signup);
 router.route("/login").post(login);
