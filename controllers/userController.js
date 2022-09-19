@@ -118,3 +118,11 @@ exports.resetpassword = BigPromise(async (req, res, next) => {
     message: "Password Changed",
   });
 });
+
+exports.userDetails = BigPromise(async (req, res, next) => {
+  const user = req.user;
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
