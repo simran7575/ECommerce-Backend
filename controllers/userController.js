@@ -70,9 +70,9 @@ exports.forgotpassword = BigPromise(async (req, res, next) => {
   if (!user) {
     return res.status(200).json(CustomError("User not Found", 400));
   }
-  const forgotToken = Math.floor(100000 + Math.random() * 900000)
+  const forgotToken = Math.floor(100000 + Math.random() * 900000);
   user.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000;
-  user.forgotPasswordToken=forgotToken;
+  user.forgotPasswordToken = forgotToken;
   await user.save({ validateBeforeSave: false });
 
   const message = `Hi ${user.name}\nForgot Your Password?\nWe received the request to reset the password for your account\n\nTo reset your password enter the following code \n\n${forgotToken}`;
@@ -96,41 +96,35 @@ exports.forgotpassword = BigPromise(async (req, res, next) => {
 });
 
 exports.verifyOtp = BigPromise(async (req, res, next) => {
-  
-  const {code} = req.body.code;
-  const user = await User.findOne({ 
-      forgotPasswordToken: code,
-      forgotPasswordExpiry: { $gt: Date.now() },
-    });
-
- if(!user){
-  return res.status(200).json(CustomError("Invalid OTP", 400));
-  
- }
- else{
-  user.forgotPasswordToken = undefined;
-  user.forgotPasswordExpiry = undefined;
-  await user.save();
-  return res.status(200).json({
-    success: true,
-    message: "OTP Verified",
+  const { code } = req.body.code;
+  const user = await User.findOne({
+    forgotPasswordToken: code,
+    forgotPasswordExpiry: { $gt: Date.now() },
   });
 
- }
-
-
+  if (!user) {
+    return res.status(200).json(CustomError("Invalid OTP", 400));
+  } else {
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "OTP Verified",
+    });
+  }
 });
 
 exports.resetPassword = BigPromise(async (req, res, next) => {
-  const {email} = req.body;
-  const user = await User.findOne({email})
-   const myEncPassword = await bcrypt.hash(req.body.password, 10);
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  const myEncPassword = await bcrypt.hash(req.body.password, 10);
   user.password = myEncPassword;
   await user.save();
   res.status(200).json({
     success: true,
     user,
-    message:"Password Changed Successfully!"
+    message: "Password Changed Successfully!",
   });
 });
 exports.userDetails = BigPromise(async (req, res, next) => {
