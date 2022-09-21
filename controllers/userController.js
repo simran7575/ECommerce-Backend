@@ -75,7 +75,7 @@ exports.forgotpassword = BigPromise(async (req, res, next) => {
   user.forgotPasswordToken = forgotToken;
   await user.save({ validateBeforeSave: false });
 
-  const message = `Hi ${user.name}\nForgot Your Password?\nWe received the request to reset the password for your account\n\nTo reset your password enter the following code \n\n${forgotToken}`;
+  const message = `Hi ${user.firstname} ${user.lastname}\nForgot Your Password?\nWe received the request to reset the password for your account\n\nTo reset your password enter the following code \n\n${forgotToken}`;
 
   try {
     await mailHelper({
