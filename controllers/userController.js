@@ -96,18 +96,18 @@ exports.forgotpassword = BigPromise(async (req, res, next) => {
 });
 
 exports.verifyOtp = BigPromise(async (req, res, next) => {
-  const { code } = req.body.code;
-  const user = await User.find({
+  const code = req.body.code;
+  const user = await User.findOne({
     forgotPasswordToken: code,
     forgotPasswordExpiry: { $gt: Date.now() },
   });
-  console.log(user);
+
   if (!user) {
     return res.status(200).json(CustomError("Invalid OTP", 400));
   } else {
     user.forgotPasswordToken = undefined;
     user.forgotPasswordExpiry = undefined;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
     return res.status(200).json({
       success: true,
       message: "OTP Verified",
