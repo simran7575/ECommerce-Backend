@@ -121,10 +121,12 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
   const myEncPassword = await bcrypt.hash(req.body.password, 10);
   user.password = myEncPassword;
   await user.save();
+  const token = user.getJwtToken();
   res.status(200).json({
     success: true,
     user,
     message: "Password Changed Successfully!",
+    token,
   });
 });
 exports.userDetails = BigPromise(async (req, res, next) => {
