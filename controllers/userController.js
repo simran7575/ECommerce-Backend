@@ -59,7 +59,7 @@ exports.login = BigPromise(async (req, res, next) => {
       token,
     });
   }
-  return res.status(200).json(CustomError("Incorrect email and password", 400));
+  return res.status(200).json(CustomError("Incorrect email or password", 400));
 });
 
 exports.forgotpassword = BigPromise(async (req, res, next) => {
