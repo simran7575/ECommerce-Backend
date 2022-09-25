@@ -7,6 +7,7 @@ const {
   verifyOtp,
   resetPassword,
   userDetails,
+  allUsers,
 } = require("../controllers/userController");
 const { isLoggedIn } = require("../middlewares/user");
 
@@ -16,5 +17,6 @@ router.route("/forgotpassword").post(forgotpassword);
 router.route("/verify").post(verifyOtp);
 router.route("/password/reset").post(resetPassword);
 router.route("/user").get(isLoggedIn, userDetails);
+router.route("/allusers").get(allUsers);
 
 module.exports = router;
